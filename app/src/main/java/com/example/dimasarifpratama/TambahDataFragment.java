@@ -1,13 +1,16 @@
 package com.example.dimasarifpratama;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 public class TambahDataFragment extends Fragment {
@@ -27,18 +30,46 @@ public class TambahDataFragment extends Fragment {
         mImage_off = v.findViewById(R.id.lamp_off);
         mImage_on = v.findViewById(R.id.lamp_on);
         mToggleButton = v.findViewById(R.id.switch_button);
-        mToggleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mToggleButton.isChecked()){
-                    mImage_off.setVisibility(View.VISIBLE);
-                    mImage_on.setVisibility(View.GONE);
-                }else {
-                    mImage_on.setVisibility(View.VISIBLE);
-                    mImage_off.setVisibility(View.GONE);
-                }
+        mToggleButton.setOnClickListener((view) -> {
+            if (mToggleButton.isChecked()) {
+                mImage_off.setVisibility(View.VISIBLE);
+                mImage_on.setVisibility(View.GONE);
+                mRemote.setmPower(0);
+                new SimpanData().execute();
+            } else {
+                mImage_on.setVisibility(View.VISIBLE);
+                mImage_off.setVisibility(View.GONE);
+                new SimpanData().execute();
             }
         });
         return v;
+    }
+    Remote mRemote = new Remote();
+
+    class SimpanData extends AsyncTask<String,String, String> {
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+        }
+        @Override
+        protected void onPostExecute(String S) {
+            if (mRemote.getmPower()==1){
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                        "Lampu Menyala",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }else {
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                        "Lampu Padam",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            RemoteLab.get(getActivity().getApplicationContext()).addData(mRemote);
+            return null;
+        }
     }
 }
