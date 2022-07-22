@@ -10,7 +10,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 public class TambahDataFragment extends Fragment {
@@ -39,6 +38,7 @@ public class TambahDataFragment extends Fragment {
             } else {
                 mImage_on.setVisibility(View.VISIBLE);
                 mImage_off.setVisibility(View.GONE);
+                mRemote.setmPower(1);
                 new SimpanData().execute();
             }
         });

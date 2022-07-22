@@ -3,9 +3,11 @@ package com.example.dimasarifpratama;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -18,22 +20,19 @@ public class ListDataFragment extends Fragment implements NavigationView.OnNavig
     List<Remote> mRemotes = new ArrayList<>();
     RecyclerView mRecyclerView;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view v = inflater.inflate(R.layout.lihat_data, container, false);
+    public View onCreate(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
+        View v = inflater.inflate(R.layout.lihat_data, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.data);
-        new LoadListdata().execute();
+        new Loadlistdata().execute();
         return v;
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-    return true;
-
+        return true;
     }
+}

@@ -1,8 +1,6 @@
 package com.example.dimasarifpratama;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,5 +45,35 @@ public class RemoteLab {
         {
             e.printStackTrace();
         }
+    }
+    public List<Remote> getRemoteData()
+    {
+        List<Remote> remotes = new ArrayList<>();
+        JSONObject jsonObject = null;
+        RequestHandler rh = new RequestHandler();
+        String JSON_STRING = rh.sendGetRequest(Config.URL_GET_DATA);
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
+
+            for (int i = 0; i < result.length(); i++)
+            {
+                JSONObject ar = result.getJSONObject(i);
+                String id = ar.getString(Config.TAG_ID);
+                String power = ar.getString(Config.TAG_POWER);
+                String time = ar.getString(Config.KEY_TIME);
+
+                Remote remote = new Remote(Integer.parseInt(id));
+                remote.setmPower(Integer.parseInt(id));
+                remote.setmTime(time);
+
+                remotes.add(remote);
+            }
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        mRemotes = remotes;
+        return mRemotes;
     }
 }
